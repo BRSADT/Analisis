@@ -1,0 +1,95 @@
+ public void qGeneral() {
+
+        boolean hayerror = false;
+        if (contador >= longitudFrase) {
+
+        } else {
+            if (!listaEspacios.isEmpty()) {
+                //si el ultimo token tiene un espaciado mayor al del ultimo agregado de la lista de espacios entonces se aprueba
+                if (lista.listadetokens.get(contador).espacios > listaEspacios.get(listaEspacios.size() - 1)) {
+                    if (anidado == 0) {
+                        listaEspaciosInden.add(lista.listadetokens.get(contador).espacios);
+                        anidado = listaEspaciosInden.get(listaEspaciosInden.size() - 1);
+                        aprobado = true;
+                    } else {
+
+                        if (lista.listadetokens.get(contador).espacios == anidado) {
+
+                        } else {
+                            hayerror = true;
+                            System.out.println("ERROR, NO ES CORRECTA LA INDENTACION  " + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
+                        }
+                    }
+
+                } else {
+                    //si el ultimo token tiene un espaciado menor al del ultimo agregado de la lista de espacios entonces se aprueba
+                    int IdentacionesNoeliminadas = listaEspacios.size();
+
+                    if (aprobado == true) {
+                        Iterator it = listaEspacios.iterator();
+
+                        while (it.hasNext()) {
+
+                            int x = (Integer) it.next();
+                            if (x > lista.listadetokens.get(contador).espacios) {
+                                it.remove();
+                                IdentacionesNoeliminadas--;
+
+                            }
+
+                        }
+                        IdentacionesNoeliminadas--;
+
+                        //System.out.println("los que aun no han salido");
+                        int aux = 0;
+                        Iterator i = listaEspaciosInden.iterator();
+                        while (i.hasNext()) {
+                            int x = (Integer) i.next();
+
+                            if ((aux >= IdentacionesNoeliminadas)) {
+
+                                i.remove();
+                            }
+                            aux++;
+                        }
+                        if (IdentacionesNoeliminadas > 0) {
+                            anidado = listaEspaciosInden.get(listaEspaciosInden.size() - 1);
+
+                            //aqui hay error    cambie el != por >=  luego >=  por >  AL FINAL DE NUEVO !=
+                            if (lista.listadetokens.get(contador).espacios != anidado) {
+                                hayerror = true;
+                                System.out.println("error Indentacion" + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
+                            }
+                        } else {
+                            System.out.println("se eliminaron todas las indentaciones");
+                            if (lista.listadetokens.get(contador).espacios != 0) {
+                                hayerror = true;
+                                System.out.println("error Indentacion (recuerda que si no hay ciclos no debe haber espacios :)  )" + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
+                            }
+
+                        }
+
+                    } else {
+                        hayerror = true;
+                        System.out.println("error indentacion" + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
+                    }
+                }
+                if (hayerror == false) {
+                    general2parte();
+                }
+            } else {
+
+                // no hay identacion
+                if (lista.listadetokens.get(contador).espacios != 0) {
+                    hayerror = true;
+                    System.out.println("error Indentacion (recuerda que si no hay ciclos no debe haber espacios :)  )" + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
+                } else {
+                    if (hayerror == false) {
+                        general2parte();
+                    }
+                }
+            }
+
+        }
+
+    }

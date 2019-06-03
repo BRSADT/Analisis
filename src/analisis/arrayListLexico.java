@@ -21,7 +21,7 @@ public class arrayListLexico {
     public arrayListLexico() {    //Constructor: crea una lista de nombres vacía
         listadetokens = new ArrayList<lex>(); //Creamos el objeto de tipo ArrayList
         contador = 0;
-        System.out.println("lexico");
+       
 
     } //Cierre del constructor
 

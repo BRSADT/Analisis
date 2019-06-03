@@ -108,10 +108,14 @@ int espacio;
                     } else {
 
                         if (tokensitos.containsKey(String.valueOf(frase.charAt(contador)))) {
-                            if (tokensitos.get(frase.charAt(contador)) != "Reservada") {
-
+                            if (tokensitos.get(frase.charAt(contador)) != "Reservada") { //checa si hay algo que pueda delimitarlo
+                     
+                                if(tokensitos.containsKey(token)){
+                                 lista.addToken(new lex(token, "", String.valueOf(linea),tokensitos.get(token) ,espacio));
+                             
+                                }else{
                                 lista.addToken(new lex(token, "", String.valueOf(linea), "Identificador",espacio));
-
+                                }
                                 token = "";
                                 q0();
                             } else {

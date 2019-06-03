@@ -237,9 +237,9 @@ public class AnalisisLSSm extends javax.swing.JFrame {
             System.out.println(parts[i].charAt(conti));
             while(parts[i].charAt(conti)==' '){
            conti++;
-           if(conti>=parts.length){
+           /*if(conti>=parts.length){
            break;
-           }
+           }*/
             }
                     
             separador = new StringTokenizer(parts[i], " \n\t");
