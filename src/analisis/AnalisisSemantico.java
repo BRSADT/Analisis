@@ -16,7 +16,7 @@ import java.util.Iterator;
  */
 public class AnalisisSemantico {
 
-    boolean brenda = true, aprobado = false, Condelse = false;
+    boolean brenda = true, aprobado = false, Condelse = false, error = false;
     public HashMap<String, String> tokensitos = new HashMap<String, String>();
     int contador, longitudFrase, linea, contadortokens = 0, espacio, anidado = 0, cicloIf = 0;
     String frase, token = "";
@@ -99,72 +99,87 @@ public class AnalisisSemantico {
                 } else {
                     if (lista.listadetokens.get(contador).token.equals("else") && aprobado == true) { //falta verificar que  en el anidado este un if
                         if (listaEspacios.indexOf(lista.listadetokens.get(contador).espacios) != -1) {
-                          int iIndentado= listaEspacios.indexOf(lista.listadetokens.get(contador).espacios);                     
-                            if (listaTokenEspacio.get(iIndentado).equals("if")||listaTokenEspacio.get(iIndentado).equals("elif")) {                          
+                            int iIndentado = listaEspacios.indexOf(lista.listadetokens.get(contador).espacios);
+                            if (listaTokenEspacio.get(iIndentado).equals("if") || listaTokenEspacio.get(iIndentado).equals("elif")) {
                                 qElse();
-                            }else{
-                            System.out.println("No se encuentra un if o elif correspondiente"+ lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);                            }
+                            } else {
+                                System.out.println("No se encuentra un if o elif correspondiente" + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
+                            }
                         } else {
-                            System.out.println("No se encuentra un if o elif correspondiente"+ lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
+                            System.out.println("No se encuentra un if o elif correspondiente" + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
                         }
 
                     } else {
-                        System.out.println("es menor la inden");
-                        //si el ultimo token tiene un espaciado menor al del ultimo agregado de la lista de espacios. entonces se aprueba
-                        int IdentacionesNoeliminadas = listaEspacios.size();
-
-                        if (aprobado == true) {//  ya tiene minimo una instruccion
-
-                            Iterator it = listaEspacios.iterator();
-                            while (it.hasNext()) {
-
-                                int x = (Integer) it.next();
-                                if (x > lista.listadetokens.get(contador).espacios) {
-                                    it.remove();
-                                    IdentacionesNoeliminadas--;
-                                }
-                            }
-                            IdentacionesNoeliminadas--;
-                            int aux = 0;
-                            Iterator i = listaEspaciosInden.iterator();
-                            while (i.hasNext()) {
-                                int x = (Integer) i.next();
-
-                                if ((aux >= IdentacionesNoeliminadas)) {
-
-                                    i.remove();
-                                }
-                                aux++;
-                            }
-
-                            if (IdentacionesNoeliminadas > 0) {
-                                anidado = listaEspaciosInden.get(listaEspaciosInden.size() - 1);
-                                //aqui hay error    cambie el != por >=  luego >=  por >  AL FINAL DE NUEVO !=
-                                if (lista.listadetokens.get(contador).espacios != anidado) {
-                                    hayerror = true;
-                                    System.out.println("error Indentacion" + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
+                        if (lista.listadetokens.get(contador).token.equals("elif") && aprobado == true) { //falta verificar que  en el anidado este un if
+                            if (listaEspacios.indexOf(lista.listadetokens.get(contador).espacios) != -1) {
+                                int iIndentado = listaEspacios.indexOf(lista.listadetokens.get(contador).espacios);
+                                if (listaTokenEspacio.get(iIndentado).equals("if") || listaTokenEspacio.get(iIndentado).equals("elif")) {
+                                    qElif();
+                                } else {
+                                    System.out.println("No se encuentra un if o elif correspondiente" + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
                                 }
                             } else {
-                                System.out.println("se eliminaron todas las indentaciones");
-                                if (lista.listadetokens.get(contador).espacios != 0) {
-                                    hayerror = true;
-                                    System.out.println("error Indentacion (recuerda que si no hay ciclos no debe haber espacios :)  )" + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
-                                }
+                                System.out.println("No se encuentra un if o elif correspondiente" + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
                             }
-                                if(hayerror!=true){
-                                general2parte();
-                                }
-                        } else {
-                            hayerror = true;
-                            System.out.println("error indentacion" + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
-                        }
-                    
-                    }
 
-                    /*  if (hayerror == false) {
+                        } else {
+                            System.out.println("es menor la inden");
+                            //si el ultimo token tiene un espaciado menor al del ultimo agregado de la lista de espacios. entonces se aprueba
+                            int IdentacionesNoeliminadas = listaEspacios.size();
+
+                            if (aprobado == true) {//  ya tiene minimo una instruccion
+
+                                Iterator it = listaEspacios.iterator();
+                                while (it.hasNext()) {
+
+                                    int x = (Integer) it.next();
+                                    if (x > lista.listadetokens.get(contador).espacios) {
+                                        it.remove();
+                                        IdentacionesNoeliminadas--;
+                                    }
+                                }
+                                IdentacionesNoeliminadas--;
+                                int aux = 0;
+                                Iterator i = listaEspaciosInden.iterator();
+                                while (i.hasNext()) {
+                                    int x = (Integer) i.next();
+
+                                    if ((aux >= IdentacionesNoeliminadas)) {
+
+                                        i.remove();
+                                    }
+                                    aux++;
+                                }
+
+                                if (IdentacionesNoeliminadas > 0) {
+                                    anidado = listaEspaciosInden.get(listaEspaciosInden.size() - 1);
+                                    //aqui hay error    cambie el != por >=  luego >=  por >  AL FINAL DE NUEVO !=
+                                    if (lista.listadetokens.get(contador).espacios != anidado) {
+                                        hayerror = true;
+                                        System.out.println("error Indentacion" + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
+                                    }
+                                } else {
+                                    System.out.println("se eliminaron todas las indentaciones");
+                                    if (lista.listadetokens.get(contador).espacios != 0) {
+                                        hayerror = true;
+                                        System.out.println("error Indentacion (recuerda que si no hay ciclos no debe haber espacios :)  )" + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
+                                    }
+                                }
+                                if (hayerror != true) {
+                                    general2parte();
+                                }
+                            } else {
+                                hayerror = true;
+                                System.out.println("error indentacion" + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
+                            }
+
+                        }//fin else
+
+                        /*  if (hayerror == false) {
                         System.out.println("aqui2");
                         general2parte();
                     }*/
+                    }
                 }
 
             } else {
@@ -185,7 +200,7 @@ public class AnalisisSemantico {
     }
 
     public void general2parte() {
-       
+
         switch (lista.listadetokens.get(contador).tipo) {
             case "Reservada":
                 switch (lista.listadetokens.get(contador).token) {
@@ -215,6 +230,19 @@ public class AnalisisSemantico {
 
                     }
                     break;
+                    case "while":
+                        if (lista.listadetokens.get(contador).token.equals("while")) {
+                            anidado = 0;
+                            aprobado = false;
+                            linea = Integer.parseInt(lista.listadetokens.get(contador).linea);
+                            listaEspacios.add(lista.listadetokens.get(contador).espacios);
+                            listaTokenEspacio.add("while");
+                            contador++;
+                            qWhile();
+                            break;
+                        }
+
+                        break;
                     case "else":
 
                         break;
@@ -223,6 +251,8 @@ public class AnalisisSemantico {
                     case "print":
                         contador++;
                         //temporal
+                        linea = Integer.parseInt(lista.listadetokens.get(contador).linea);
+                        qPrint();
                         qGeneral();
 
                         break;
@@ -245,6 +275,19 @@ public class AnalisisSemantico {
     }
 
     public void qIf() {
+        QExpresion();
+        if (error == false) {
+            contador++;
+            //revisar indentacion
+            System.out.println("fin declaracion if");
+
+            qGeneral();
+            System.out.println("fin if");
+        }
+    }
+
+    public void QExpresion() {
+        error = true;
         if (contador >= longitudFrase) {
             System.out.println("Error");
         } else {
@@ -257,7 +300,7 @@ public class AnalisisSemantico {
                     contador++; //siguiente token operador comparacion
 
                     if (contador >= longitudFrase) {
-                        System.out.println("Error en:" + lista.listadetokens.get(contador - 1).token);
+                        System.out.println("Error en:" + lista.listadetokens.get(contador - 1).token + " linea " + lista.listadetokens.get(contador - 1).linea);
                     } else {
 
                         //el operador de comparacion
@@ -265,76 +308,48 @@ public class AnalisisSemantico {
 
                             contador++;//siguiente token numero o identificador
                             if (contador >= longitudFrase) {
-                                System.out.println("Error en  -: " + lista.listadetokens.get(contador - 1).token);
+                                System.out.println("Error en:" + lista.listadetokens.get(contador - 1).token + " linea " + lista.listadetokens.get(contador - 1).linea);
                                 //el segundo termino, identificador o numero  
                             } else {
                                 if ((lista.listadetokens.get(contador).tipo.equals("numero") || lista.listadetokens.get(contador).tipo.equals("Identificador")) && linea == Integer.parseInt(lista.listadetokens.get(contador).linea)) {
 
                                     contador++; //token :
+
                                     if (contador >= longitudFrase) {
-                                        System.out.println("Error en:  -" + lista.listadetokens.get(contador - 1).token);
+                                        System.out.println("Error en:" + lista.listadetokens.get(contador - 1).token + " linea " + lista.listadetokens.get(contador - 1).linea);
                                     } else {
 
                                         if ((lista.listadetokens.get(contador).token.equals(":")) && linea == Integer.parseInt(lista.listadetokens.get(contador).linea)) {
-
-                                            contador++;
-                                            //revisar indentacion
-                                            System.out.println("fin declaracion if");
-
-                                            qGeneral();
-                                            System.out.println("fin if");
-                                            /*  if (contador >= longitudFrase) {
-                                                System.out.println("Error en  -: " + lista.listadetokens.get(contador - 1).token);
-                                                //el segundo termino, identificador o numero  
-                                            } else {
-                                                if ((lista.listadetokens.get(contador).token.equals("elif"))) {
-                                                    qElif();
-
-                                                }
-                                            }
-                                            //qGeneral();
-                                             */
+                                            error = false;
                                         } else {
-                                            System.out.println("error en  *:" + lista.listadetokens.get(contador).token);
+                                            System.out.println("Error en:" + lista.listadetokens.get(contador - 1).token + " linea " + lista.listadetokens.get(contador - 1).linea);
                                         }
                                     }
 
                                 } else {
-                                    System.out.println("error en:" + lista.listadetokens.get(contador).token);
+                                    System.out.println("Error en:" + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
+
                                 }
                             }
                         } else {
-                            System.out.println("error en:" + lista.listadetokens.get(contador).token);
+                            System.out.println("Error en:" + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
                         }
                     }
 
                 } else {
-                    System.out.println("error en:" + lista.listadetokens.get(contador).token);
+                    System.out.println("Error en:" + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
                 }
 
             } else {
-                System.out.println("error en:" + lista.listadetokens.get(contador).token);
+                System.out.println("Error en:" + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
             }
 
         }
     }
 
     public void qElif() {
-        System.out.println("hay un elif");
-        System.out.println("altura if" + listaEspacios.get(listaEspacios.size() - 1));
-        System.out.println("espacios instrucciones" + anidado);
-        System.out.println("token espaciado" + lista.listadetokens.get(contador).token);
-        contador++;
-    }
-
-    public void qElse() {
         int IdentacionesNoeliminadas = listaEspacios.size();
 
-        System.out.println("esta al mismo nivel de" + listaEspacios.get(listaEspacios.indexOf(lista.listadetokens.get(contador).espacios)) + " que es un " + listaTokenEspacio.get(listaEspacios.indexOf(lista.listadetokens.get(contador).espacios)));
-        System.out.println("la ind que tiene es " + listaEspaciosInden.get(listaEspacios.indexOf(lista.listadetokens.get(contador).espacios)));
-  
-     
-        
         Iterator it = listaEspacios.iterator();
         while (it.hasNext()) {
 
@@ -346,8 +361,7 @@ public class AnalisisSemantico {
             }
 
         }
-        
-        
+
         IdentacionesNoeliminadas--;
 
         int aux = 0;
@@ -361,15 +375,14 @@ public class AnalisisSemantico {
             }
             aux++;
         }
-        System.out.println("los tokens que hay indentados");
+
         aux = 0;
         Iterator i4 = listaTokenEspacio.iterator();
         while (i4.hasNext()) {
-             String x = (String) i4.next();
-
+            String x = (String) i4.next();
 
             if ((aux >= IdentacionesNoeliminadas)) {
-              
+
                 i4.remove();
             }
             aux++;
@@ -381,7 +394,69 @@ public class AnalisisSemantico {
             //aqui hay error    cambie el != por >=  luego >=  por >  AL FINAL DE NUEVO !=
         }
 
-        System.out.println("las siguientes instrucciones tendra una indentacion de " + anidado);
+        listaEspacios.add(lista.listadetokens.get(contador).espacios);
+        listaTokenEspacio.add("elif");
+        linea = Integer.parseInt(lista.listadetokens.get(contador).linea);
+        contador++;
+
+        QExpresion();
+        if (error == false) {
+            anidado = 0;
+            aprobado = false;
+            contador++; //dos puntos4
+
+            qGeneral();
+
+        }
+
+    }
+
+    public void qElse() {
+        int IdentacionesNoeliminadas = listaEspacios.size();
+
+        Iterator it = listaEspacios.iterator();
+        while (it.hasNext()) {
+
+            int x = (Integer) it.next();
+            if (x > lista.listadetokens.get(contador).espacios) {
+                it.remove();
+                IdentacionesNoeliminadas--;
+
+            }
+
+        }
+
+        IdentacionesNoeliminadas--;
+
+        int aux = 0;
+        Iterator i = listaEspaciosInden.iterator();
+        while (i.hasNext()) {
+            int x = (Integer) i.next();
+
+            if ((aux >= IdentacionesNoeliminadas)) {
+
+                i.remove();
+            }
+            aux++;
+        }
+        aux = 0;
+        Iterator i4 = listaTokenEspacio.iterator();
+        while (i4.hasNext()) {
+            String x = (String) i4.next();
+
+            if ((aux >= IdentacionesNoeliminadas)) {
+
+                i4.remove();
+            }
+            aux++;
+        }
+
+        if (IdentacionesNoeliminadas > 0) {
+            anidado = listaEspaciosInden.get(listaEspaciosInden.size() - 1);
+
+            //aqui hay error    cambie el != por >=  luego >=  por >  AL FINAL DE NUEVO !=
+        }
+
         listaEspacios.add(lista.listadetokens.get(contador).espacios);
         listaTokenEspacio.add("else");
         linea = Integer.parseInt(lista.listadetokens.get(contador).linea);
@@ -396,8 +471,7 @@ public class AnalisisSemantico {
                 aprobado = false;
                 contador++; //dos puntos4
                 System.out.println("el ultimo indentado" + listaEspacios.get(listaEspacios.size() - 1));
-                
-           
+
                 qGeneral();
             } else {
                 System.out.println("Error en:  -" + lista.listadetokens.get(contador).token);
@@ -515,6 +589,75 @@ public class AnalisisSemantico {
             }
         }
     }
+
+    public void qWhile() {
+        QExpresion();
+        if (error == false) {
+            contador++;
+            //revisar indentacion
+            qGeneral();
+        }
+    }
+
+    public void qPrint() {
+
+        error = true;
+        if (contador >= longitudFrase) {
+            System.out.println("Error en:" + lista.listadetokens.get(contador - 1).token + " linea " + lista.listadetokens.get(contador - 1).linea);
+
+        } else {
+
+            //revisa que despues del if haya un identificador o numero 
+            if ((lista.listadetokens.get(contador).token.equals("(")) && linea == Integer.parseInt(lista.listadetokens.get(contador).linea)) {
+                contador++;
+                if (contador >= longitudFrase) {
+                    System.out.println("Error en:" + lista.listadetokens.get(contador - 1).token + " linea " + lista.listadetokens.get(contador - 1).linea);
+
+                } else {
+                    if ((lista.listadetokens.get(contador).token.equals("\"") || (lista.listadetokens.get(contador).tipo.equals("Identificador"))) && linea == Integer.parseInt(lista.listadetokens.get(contador).linea)) {
+
+                        if ((lista.listadetokens.get(contador).token.equals("\"")) && linea == Integer.parseInt(lista.listadetokens.get(contador).linea)) {
+                            contador++;
+                            //funcion verificar palabra string
+                            qString();
+                        } else {
+                            if ((lista.listadetokens.get(contador).tipo.equals("Identificador")) && linea == Integer.parseInt(lista.listadetokens.get(contador).linea)) {
+                                contador++;
+                                error=false;
+                            } 
+                         }
+                        if(error==false){
+                            //siguiente paso
+                            
+                        }else{
+                        System.out.println("Error en:" + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
+                     
+                        }
+                    //siguietne
+                    }else{
+                        System.out.println("Error en:" + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
+                       
+                    }
+                }
+            } else {
+                System.out.println("Error en:" + lista.listadetokens.get(contador).token + " linea " + lista.listadetokens.get(contador).linea);
+
+            }
+
+        }
+
+    }
+
+    
+    public void qString(){
+while(!lista.listadetokens.get(contador).token.equals("\"")){
+    
+    
+    
+    }
+
+
+}
 
 }
 //verificar si el if puede tener numero no enteros
