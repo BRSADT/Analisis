@@ -5,6 +5,8 @@
  */
 package analisis;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Samantha
@@ -15,6 +17,7 @@ public class lex {
     String lexema;
     String linea;
     String tipo;
+        
 public int espacios;
     public lex(String token, String lexema, String linea, String tipo,int espacio) {
         this.token = token;
@@ -24,4 +27,6 @@ public int espacios;
         this.espacios=espacio;
     }
 
+    
 }
+

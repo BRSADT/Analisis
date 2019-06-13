@@ -185,22 +185,23 @@ public class AnalisisLSSm extends javax.swing.JFrame {
         tokensitos.put("yield", "Reservada");
         tokensitos.put("==", "Operador Comparacion");
         tokensitos.put("!=", "Operador Comparacion");
+        tokensitos.put("!", "Operador Comparacion");
         tokensitos.put("<", "Operador Comparacion");
         tokensitos.put(">", "Operador Comparacion");
         tokensitos.put("++", "Operador");
         tokensitos.put("--", "Operador");
         tokensitos.put("<=", "Operador Comparacion");
         tokensitos.put(">=", "Operador Comparacion");
-        tokensitos.put("+", "Operador");
-        tokensitos.put("-", "Operador");
-        tokensitos.put("*", "Operador");
-        tokensitos.put("**", "Operador");
-        tokensitos.put("/", "Operador");
+        tokensitos.put("+", "Operador Aritmetico");
+        tokensitos.put("-", "Operador Aritmetico");
+        tokensitos.put("*", "Operador Aritmetico");
+        tokensitos.put("**", "Operador Aritmetico");
+        tokensitos.put("/", "Operador Aritmetico");
         tokensitos.put("//", "Operador");
         tokensitos.put("%", "Operador");
         tokensitos.put("&", "Operador");
         tokensitos.put("|", "Operador");
-        tokensitos.put("^", "Operador");
+        tokensitos.put("^", "Operador Aritmetico");
         tokensitos.put("~", "Operador");
         tokensitos.put("<<", "Operador");
         tokensitos.put(">>", "Operador");
@@ -210,6 +211,7 @@ public class AnalisisLSSm extends javax.swing.JFrame {
         tokensitos.put("]", "Delimitadores");
         tokensitos.put("{", "Delimitadores");
         tokensitos.put("}", "Delimitadores");
+        tokensitos.put("\"", "Delimitadores");
         tokensitos.put(",", "Delimitadores");
         tokensitos.put(":", "Delimitadores");
         tokensitos.put(";", "Delimitadores");
@@ -234,14 +236,18 @@ public class AnalisisLSSm extends javax.swing.JFrame {
         int conti=0;
         for (int i = 0; i < parts.length; i++) {
             conti=0;
+            try{
             System.out.println(parts[i].charAt(conti));
+           
             while(parts[i].charAt(conti)==' '){
            conti++;
            /*if(conti>=parts.length){
            break;
            }*/
             }
-                    
+            }
+            catch(Exception e){
+            }
             separador = new StringTokenizer(parts[i], " \n\t");
             encontrado = false;
             lineaCompleta.clear();

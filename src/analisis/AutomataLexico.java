@@ -78,7 +78,7 @@ int espacio;
                 // token+=frase.charAt(contador);
                 // contador++;
                 qExpresion();
-
+          
             }
 
         }
@@ -136,15 +136,17 @@ int espacio;
     public void qExpresion() {
 
         if (contador >= longitudFrase) {
-
+            System.out.println(token);
             if (tokensitos.containsKey(token)) {
+                System.out.println(token+"inicio");
                 lista.addToken(new lex(token, "", String.valueOf(linea), tokensitos.get(token),espacio));
             }
             lista.addToken(new lex(token, "", String.valueOf(linea), "numero",espacio));
 
         } else { //no Ha terminado
+          
             if (Character.isDigit(frase.charAt(contador))) {
-
+ 
                 token += frase.charAt(contador);
                 contador++;
                 qNumero1();
@@ -165,19 +167,27 @@ int espacio;
 
     public void qtoken2partes() {
         if (contador >= longitudFrase) {
-
+            
             lista.addToken(new lex(token, "", String.valueOf(linea), tokensitos.get(token),espacio));
         } else { //no Ha terminado
             token += frase.charAt(contador);
-
+  System.out.println(token+"2parte");
             if (tokensitos.containsKey(token)) {
+                    
                 contador++;
+                
                 qtoken3partes();
             } else {
-
+          
                 token = token.substring(0, token.length() - 1);
-
+ if (tokensitos.containsKey(token)) {
+     
+                lista.addToken(new lex(token,"", String.valueOf(linea),  tokensitos.get(token),espacio));
+             
+             }else{
                 lista.addToken(new lex(token, "", String.valueOf(linea), tokensitos.get(token),espacio));
+ 
+ }
                 token = "";
 
                 q0();
@@ -189,10 +199,11 @@ int espacio;
 
     public void qtoken3partes() {
         if (contador >= longitudFrase) {
-
+ System.out.println(token);
             lista.addToken(new lex(token, "", String.valueOf(linea), tokensitos.get(token),espacio));
         } else { //no Ha terminado
             token += frase.charAt(contador);
+            System.out.println(token);
             if (tokensitos.containsKey(token)) {
 
                 lista.addToken(new lex(token, "", String.valueOf(linea), tokensitos.get(token),espacio));
